@@ -1,15 +1,26 @@
 import styled from "styled-components";
 import axios from "axios";
-import LoginRegister from "../Components/LoginRegister";
-import {buttonsLigthBlue} from "../Constants/Colors"
+import { buttonsLigthBlue } from "../Constants/Colors"
 import { useState } from "react";
 import Logo from "../Assets/Logo.png"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function Login() {
-
+export default function Login({ setToken }) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const navigate = useNavigate()
+
+    function loginApp(e) {
+        e.preventDefault()
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
+        const body = { email, password }
+        const promise = axios.post(URL, body)
+        promise.then((res) => {
+            setToken(res.data.token)
+            navigate("/hoje")
+        })
+        promise.catch((err)=>alert("Usuário não cadastrado"))
+    }
 
     return (
         <>
@@ -18,8 +29,7 @@ export default function Login() {
             </LogoStyle>
 
 
-            <FormStyle>
-                {/* onSubmit={submitFunction} */}
+            <FormStyle onSubmit={loginApp}>
 
                 <input placeholder="email" type="email" required
                     value={email} onChange={(e) => setEmail(e.target.value)} >

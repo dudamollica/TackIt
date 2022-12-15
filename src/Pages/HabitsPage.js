@@ -2,13 +2,27 @@ import NavBar from "../Components/NavBar"
 import styled from "styled-components"
 import { darkBlue, buttonsLigthBlue, backgroundGray } from "../Constants/Colors"
 import Footer from "../Components/Footer"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import WeekDay from "../Components/WeekDay"
+import axios from "axios"
+import AllHabits from "../Components/AllHabits"
 
-export default function Habits() {
+export default function Habits({ token }) {
     const [openAddHabit, setOpenAddHabit] = useState(false)
-    const weekDay = ["D","S","T","Q","Q","S","S"]
-    const [daysChoose, setDaysChoose] = useState([]) 
+    const weekDay = ["D", "S", "T", "Q", "Q", "S", "S"]
+    const [daysChoose, setDaysChoose] = useState([])
+    const [habitName, setHabitName] = useState("")
+    const [habitsList, setHabitsList] = useState([])
+    console.log(habitsList)
+
+    useEffect(()=>{
+    const URL="https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+    const config = { headers: {
+        authorization: `Bearer ${token}`
+    }}
+    const promise= axios.get(URL, config)
+    promise.then((res)=>setHabitsList(res.data))
+    }, [])
 
     function openedAddHabit() {
         setOpenAddHabit(true)
@@ -18,6 +32,19 @@ export default function Habits() {
         setOpenAddHabit(false)
     }
 
+    function saveHabit(e) {
+        e.preventDefault()
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+        const body = { name: habitName, days: daysChoose }
+        const config = {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        }
+        const promise = axios.post(URL, body, config)
+        promise.then((res)=>{ setHabitsList([...habitsList, res.data])
+            setOpenAddHabit(false)})
+    }
 
     return (
         <>
@@ -27,22 +54,22 @@ export default function Habits() {
                     <button onClick={openedAddHabit}>+</button>
                 </NewHabit>
                 {openAddHabit && <AddHabitStyle>
-                    
-                        <FormStyle>
-                            <input placeholder="nome do hábito"></input>
-                            <WeekDayContainer>
-                            {weekDay.map((d, index)=> <WeekDay key={index} name={d}/>)}
-                            </WeekDayContainer>
-                            <ContainerButtons>
-                                <CancelButton onClick={cancelAddHabit}>Cancelar</CancelButton>
-                                <SaveButton type="submit">Salvar</SaveButton>
-                            </ContainerButtons>
-                        </FormStyle>
-                    
+
+                    <FormStyle onSubmit={saveHabit}>
+                        <input placeholder="nome do hábito" value={habitName} onChange={(e) => setHabitName(e.target.value)}></input>
+                        <WeekDayContainer>
+                            {weekDay.map((d, index) => <WeekDay key={index} id={index} daysChoose={daysChoose} setDaysChoose={setDaysChoose} name={d} />)}
+                        </WeekDayContainer>
+                        <ContainerButtons>
+                            <CancelButton onClick={cancelAddHabit}>Cancelar</CancelButton>
+                            <SaveButton type="submit">Salvar</SaveButton>
+                        </ContainerButtons>
+                    </FormStyle>
+
                 </AddHabitStyle>}
-                <NoHabistMsg>
+                {habitsList.length==0?<NoHabistMsg>
                     Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
-                </NoHabistMsg>
+                </NoHabistMsg>: habitsList.map((h)=> <AllHabits key={h.id} name={h.name} days={h.days}/>)}
             </HabistContainer>
 
             <Footer />
@@ -69,7 +96,7 @@ border-radius: 5px;
 margin-bottom: 30px;
 input{
 width: 303px;
-height: 45px;
+height: 40px;
 border: 1px solid #D5D5D5;
 border-radius: 5px;
 margin-bottom: 10px;
@@ -84,7 +111,6 @@ input::placeholder{
 `
 
 const ContainerButtons = styled.div`
-
 display:flex;
 align-items: flex-end;
 justify-content: flex-end;

@@ -1,14 +1,27 @@
 import styled from "styled-components";
 import axios from "axios";
-import LoginRegister from "../Components/LoginRegister";
 import { useState } from "react";
 import Logo from "../Assets/Logo.png"
-import { Link } from "react-router-dom";
-import {buttonsLigthBlue} from "../Constants/Colors"
+import { Link, useNavigate } from "react-router-dom";
+import { buttonsLigthBlue } from "../Constants/Colors"
 
 
 export default function Register() {
     const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [name, setName] = useState("")
+    const [image, setImage] = useState("")
+    const navigate = useNavigate()
+
+    function submitRegister(e) {
+        e.preventDefault()
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up"
+        const body = { email, name, image, password }
+        const promise = axios.post(URL, body)
+        promise.then((res) => navigate("/"))
+        promise.catch((err) => alert(err.response.data.message))
+    }
+
     return (
         <>
             <LogoStyle>
@@ -16,23 +29,22 @@ export default function Register() {
             </LogoStyle>
 
 
-            <FormStyle>
-                {/* onSubmit={submitFunction} */}
+            <FormStyle onSubmit={submitRegister}>
 
                 <input placeholder="email" type="email" required
                     value={email} onChange={(e) => setEmail(e.target.value)} >
                 </input>
 
                 <input placeholder="senha" type="password" required
-                    value={email} onChange={(e) => setEmail(e.target.value)} >
+                    value={password} onChange={(e) => setPassword(e.target.value)} >
                 </input>
 
                 <input placeholder="nome" type="text" required
-                    value={email} onChange={(e) => setEmail(e.target.value)} >
+                    value={name} onChange={(e) => setName(e.target.value)} >
                 </input>
 
                 <input placeholder="foto" type="url" required
-                    value={email} onChange={(e) => setEmail(e.target.value)} >
+                    value={image} onChange={(e) => setImage(e.target.value)} >
                 </input>
 
                 <button type="submit">Cadastrar</button>

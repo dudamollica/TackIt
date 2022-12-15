@@ -2,20 +2,24 @@ import { useState } from "react"
 import styled from "styled-components"
 
 
-export default function WeekDay({ name }) {
+export default function WeekDay({ id, name, daysChoose, setDaysChoose }) {
     const [dayChoose, setDayChoose] = useState(false)
 
-    function chooseThisDay(e) {
+    function chooseThisDay(e,id) {
         e.preventDefault()
         if (!dayChoose) {
             setDayChoose(true)
+            const daysList=[...daysChoose, id]
+            setDaysChoose(daysList)
         } else {
             setDayChoose(false)
+            const daysList= daysChoose.filter((d)=>d!=id)
+            setDaysChoose(daysList)
         }
     }
 
     return (
-        <ButtonStyle onClick={chooseThisDay} dayChoose={dayChoose}>{name}</ButtonStyle>
+        <ButtonStyle onClick={(e)=>chooseThisDay(e,id)} dayChoose={dayChoose}>{name}</ButtonStyle>
     )
 
 }

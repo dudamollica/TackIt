@@ -48,6 +48,8 @@ table {
 span, div, input, h1, h2, p, button, form, label{
     font-family: 'Lexend Deca';
 }
-
+button:hover{
+	cursor:pointer;
+}
 `
 export default GlobalStyle;

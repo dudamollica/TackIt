@@ -5,16 +5,19 @@ import Habits from "./Pages/HabitsPage.js"
 import Today from "./Pages/TodayPage"
 import Historic from "./Pages/HistoricPage.js";
 import GlobalStyle from "./GlobalStyle"
+import { useState } from "react";
 
 function App() {
+const [token, setToken] =useState("")
+  
   return (
     <BrowserRouter>
     <GlobalStyle />
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Login setToken={setToken}/>} />
         <Route path="/cadastro" element={<Register />} />
-        <Route path="/habitos" element={<Habits />} />
-        <Route path="/hoje" element={<Today />} />
+        <Route path="/habitos" element={<Habits token={token} />} />
+        <Route path="/hoje" element={<Today token={token} />} />
         <Route path="/historico" element={<Historic />} />
       </Routes>
     </BrowserRouter>
