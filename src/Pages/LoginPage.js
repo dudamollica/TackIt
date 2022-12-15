@@ -19,11 +19,11 @@ export default function Login({ setToken }) {
             setToken(res.data.token)
             navigate("/hoje")
         })
-        promise.catch((err)=>alert("Usuário não cadastrado"))
+        promise.catch((err) => alert("Usuário não cadastrado"))
     }
 
     return (
-        <>
+        <LoginContainer>
             <LogoStyle>
                 <img src={Logo} />
             </LogoStyle>
@@ -44,17 +44,23 @@ export default function Login({ setToken }) {
             <LinkStyle>
                 <Link to="/cadastro">Não tem uma conta? Cadastre-se!</Link>
             </LinkStyle>
-        </>
+        </LoginContainer>
     )
 }
 
+
+const LoginContainer = styled.div`
+    height: 100vh;
+    background-color: white;
+`
 
 const LogoStyle = styled.div`
 width:100%;
 display:flex;
 align-items: center;
 justify-content: center;
-margin-top:68px;
+padding-top:68px;
+
 `
 const FormStyle = styled.form`
 width:100%;

@@ -25,6 +25,8 @@ justify-content: space-between;
 align-items: center;
 padding: 0px 30px;
 box-sizing: border-box;
+z-index:1;
+background-color: white;
 a{
 color: ${buttonsLigthBlue};
 text-decoration: none;

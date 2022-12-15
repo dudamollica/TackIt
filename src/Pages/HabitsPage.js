@@ -15,13 +15,15 @@ export default function Habits({ token }) {
     const [habitsList, setHabitsList] = useState([])
     console.log(habitsList)
 
-    useEffect(()=>{
-    const URL="https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
-    const config = { headers: {
-        authorization: `Bearer ${token}`
-    }}
-    const promise= axios.get(URL, config)
-    promise.then((res)=>setHabitsList(res.data))
+    useEffect(() => {
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+        const config = {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        }
+        const promise = axios.get(URL, config)
+        promise.then((res) => setHabitsList(res.data))
     }, [])
 
     function openedAddHabit() {
@@ -30,6 +32,8 @@ export default function Habits({ token }) {
 
     function cancelAddHabit() {
         setOpenAddHabit(false)
+        setHabitName("")
+        setDaysChoose([])
     }
 
     function saveHabit(e) {
@@ -42,14 +46,18 @@ export default function Habits({ token }) {
             }
         }
         const promise = axios.post(URL, body, config)
-        promise.then((res)=>{ setHabitsList([...habitsList, res.data])
-            setOpenAddHabit(false)})
+        promise.then((res) => {
+            setHabitsList([...habitsList, res.data])
+            setOpenAddHabit(false)
+        })
+        setHabitName("")
+        setDaysChoose([])
     }
 
     return (
         <>
             <NavBar />
-            <HabistContainer>
+            <HabistContainer habitsList={habitsList}>
                 <NewHabit>Meus hábitos
                     <button onClick={openedAddHabit}>+</button>
                 </NewHabit>
@@ -67,9 +75,9 @@ export default function Habits({ token }) {
                     </FormStyle>
 
                 </AddHabitStyle>}
-                {habitsList.length==0?<NoHabistMsg>
+                {habitsList.length == 0 ? <NoHabistMsg>
                     Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
-                </NoHabistMsg>: habitsList.map((h)=> <AllHabits key={h.id} name={h.name} days={h.days}/>)}
+                </NoHabistMsg> : habitsList.map((h) => <AllHabits key={h.id} habitsList={habitsList} setHabitsList={setHabitsList} token={token} id={h.id} weekDay={weekDay} name={h.name} days={h.days} />)}
             </HabistContainer>
 
             <Footer />
@@ -82,6 +90,7 @@ display:flex;
 margin-left: 10px;
 margin-bottom: 25px;
 gap: 3px;
+width:100%;
 `
 
 const FormStyle = styled.form`
@@ -155,7 +164,7 @@ margin-bottom: 30px;
 
 const HabistContainer = styled.div`
 background-color: ${backgroundGray};
-height: 527px;
+padding-bottom: 100px;
 `
 const NewHabit = styled.div`
 display:flex;

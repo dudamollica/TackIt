@@ -21,6 +21,12 @@ align-items: center;
 padding-left: 11px;
 padding-right: 11px;
 box-sizing: border-box;
+div{
+    background-color:${darkBlue} ;
+}
+img{
+    background-color: ${darkBlue};
+}
 `
 const UserImg = styled.img`
 width: 51px;

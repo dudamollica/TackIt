@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import { backgroundGray } from "./Constants/Colors";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -51,5 +52,9 @@ span, div, input, h1, h2, p, button, form, label{
 button:hover{
 	cursor:pointer;
 }
+/* *{
+background-color: ${backgroundGray};
+} */
+
 `
 export default GlobalStyle;

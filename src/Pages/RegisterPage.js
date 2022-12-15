@@ -23,7 +23,7 @@ export default function Register() {
     }
 
     return (
-        <>
+        <RegisterContainer>
             <LogoStyle>
                 <img src={Logo} />
             </LogoStyle>
@@ -52,9 +52,14 @@ export default function Register() {
             <LinkStyle>
                 <Link to="/">Já tem uma conta? Faça login!</Link>
             </LinkStyle>
-        </>
+        </RegisterContainer>
     )
 }
+
+const RegisterContainer = styled.div`
+height: 100vh;
+background-color: white;
+`
 
 
 const LogoStyle = styled.div`
@@ -62,7 +67,7 @@ width:100%;
 display:flex;
 align-items: center;
 justify-content: center;
-margin-top:68px;
+padding-top:68px;
 `
 const FormStyle = styled.form`
 width:100%;
