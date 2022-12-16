@@ -1,14 +1,16 @@
 import styled from "styled-components";
 import axios from "axios";
 import { buttonsLigthBlue } from "../Constants/Colors"
-import { useState } from "react";
+import { useState, createContext, useContext} from "react";
 import Logo from "../Assets/Logo.png"
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../AppContext/auth";
 
 export default function Login({ setToken }) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
+    const {saveToken, saveImg}= useContext(AuthContext)
 
     function loginApp(e) {
         e.preventDefault()
@@ -16,7 +18,8 @@ export default function Login({ setToken }) {
         const body = { email, password }
         const promise = axios.post(URL, body)
         promise.then((res) => {
-            setToken(res.data.token)
+            saveToken(res.data.token)
+            saveImg(res.data.image)
             navigate("/hoje")
         })
         promise.catch((err) => alert("Usuário não cadastrado"))
@@ -28,9 +31,7 @@ export default function Login({ setToken }) {
                 <img src={Logo} />
             </LogoStyle>
 
-
             <FormStyle onSubmit={loginApp}>
-
                 <input placeholder="email" type="email" required
                     value={email} onChange={(e) => setEmail(e.target.value)} >
                 </input>
@@ -38,7 +39,6 @@ export default function Login({ setToken }) {
                 <input placeholder="senha" type="password" required
                     value={password} onChange={(e) => setPassword(e.target.value)} >
                 </input>
-
                 <button type="submit">Entrar</button>
             </FormStyle>
             <LinkStyle>

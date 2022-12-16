@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Logo from "../Assets/Logo.png"
 import { Link, useNavigate } from "react-router-dom";
 import { buttonsLigthBlue } from "../Constants/Colors"
-
+import { AuthContext } from "../AppContext/auth";
 
 export default function Register() {
     const [email, setEmail] = useState("")
@@ -12,13 +12,15 @@ export default function Register() {
     const [name, setName] = useState("")
     const [image, setImage] = useState("")
     const navigate = useNavigate()
+    const {saveImg}= useContext(AuthContext)
 
     function submitRegister(e) {
         e.preventDefault()
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up"
         const body = { email, name, image, password }
         const promise = axios.post(URL, body)
-        promise.then((res) => navigate("/"))
+        promise.then((res) => {saveImg(image) 
+            navigate("/")})
         promise.catch((err) => alert(err.response.data.message))
     }
 

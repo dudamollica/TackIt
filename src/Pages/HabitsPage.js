@@ -2,17 +2,19 @@ import NavBar from "../Components/NavBar"
 import styled from "styled-components"
 import { darkBlue, buttonsLigthBlue, backgroundGray } from "../Constants/Colors"
 import Footer from "../Components/Footer"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import WeekDay from "../Components/WeekDay"
 import axios from "axios"
 import AllHabits from "../Components/AllHabits"
+import { AuthContext } from "../AppContext/auth";
 
-export default function Habits({ token }) {
+export default function Habits() {
     const [openAddHabit, setOpenAddHabit] = useState(false)
     const weekDay = ["D", "S", "T", "Q", "Q", "S", "S"]
     const [daysChoose, setDaysChoose] = useState([])
     const [habitName, setHabitName] = useState("")
     const [habitsList, setHabitsList] = useState([])
+    const {token}= useContext(AuthContext)
 
     useEffect(() => {
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"

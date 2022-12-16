@@ -1,12 +1,16 @@
 import styled from "styled-components"
 import {darkBlue} from "../Constants/Colors"
 import TrackIt from "../Assets/TrackIt.png"
+import { AuthContext } from "../AppContext/auth";
+import { useContext } from "react";
 
 export default function NavBar(){
+    const {userImg}= useContext(AuthContext)
+
     return(
         <NavBarStyle>
            <div> <img src={TrackIt} alt="Logo TrackIt"/> </div>
-            <UserImg src="https://almeidajunior-prod1.s3.amazonaws.com/prod/uploads/news/5d81505ac6770.jpg"/>
+            <UserImg src={userImg}/>
         </NavBarStyle>
     )
 }

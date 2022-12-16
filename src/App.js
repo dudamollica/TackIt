@@ -8,23 +8,24 @@ import GlobalStyle from "./GlobalStyle"
 import { useState } from "react";
 import styled from "styled-components";
 import { backgroundGray } from "./Constants/Colors.js";
+import AuthProvider from "./AppContext/auth.js";
 
 function App() {
-  const [token, setToken] = useState("")
-  //imagem do user
 
   return (
     <AppStyle>
+      <AuthProvider>
       <BrowserRouter>
         <GlobalStyle />
         <Routes>
-          <Route path="/" element={<Login setToken={setToken} />} />
+          <Route path="/" element={<Login/>} />
           <Route path="/cadastro" element={<Register />} />
-          <Route path="/habitos" element={<Habits token={token} />} />
-          <Route path="/hoje" element={<Today token={token} />} />
+          <Route path="/habitos" element={<Habits />} />
+          <Route path="/hoje" element={<Today />} />
           <Route path="/historico" element={<Historic />} />
         </Routes>
       </BrowserRouter>
+      </AuthProvider>
     </AppStyle>
   );
 }

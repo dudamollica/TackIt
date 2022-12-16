@@ -1,17 +1,17 @@
 import axios from "axios";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Footer from "../Components/Footer";
 import NavBar from "../Components/NavBar";
 import { backgroundGray, darkBlue, ligthGreen } from "../Constants/Colors";
 import Check from "../Assets/check.png";
+import { AuthContext } from "../AppContext/auth";
 
-export default function Today({ token }) {
+export default function Today() {
   const [todaysHabits, setTodayHabits] = useState([]);
   const [concludesHabits, setConcludesHabits] = useState([]);
-    console.log(concludesHabits);
-  console.log(todaysHabits);
+  const {token}= useContext(AuthContext)
 
   useEffect(() => {
     const URL =
@@ -113,16 +113,14 @@ export default function Today({ token }) {
                   Seu recorde:
                   <HighestSequence
                     cs={h.currentSequence}
-                    hs={h.highestSequence}
-                  >
+                    hs={h.highestSequence}>
                     {h.highestSequence} dias
                   </HighestSequence>
                 </span>
               </div>
               <CheckBox
                 onClick={() => check(h.id, h.done)}
-                done={h.done ? true : false}
-              >
+                done={h.done ? true : false}>
                 <img src={Check} />
               </CheckBox>
             </TodayHabits>
