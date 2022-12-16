@@ -11,6 +11,7 @@ import { backgroundGray } from "./Constants/Colors.js";
 
 function App() {
   const [token, setToken] = useState("")
+  //imagem do user
 
   return (
     <AppStyle>

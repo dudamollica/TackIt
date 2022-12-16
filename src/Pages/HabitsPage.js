@@ -13,7 +13,6 @@ export default function Habits({ token }) {
     const [daysChoose, setDaysChoose] = useState([])
     const [habitName, setHabitName] = useState("")
     const [habitsList, setHabitsList] = useState([])
-    console.log(habitsList)
 
     useEffect(() => {
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
@@ -32,7 +31,6 @@ export default function Habits({ token }) {
 
     function cancelAddHabit() {
         setOpenAddHabit(false)
-        setHabitName("")
         setDaysChoose([])
     }
 
@@ -65,7 +63,7 @@ export default function Habits({ token }) {
 
                     <FormStyle onSubmit={saveHabit}>
                         <input placeholder="nome do hábito" value={habitName} onChange={(e) => setHabitName(e.target.value)}></input>
-                        <WeekDayContainer>
+                        <WeekDayContainer >
                             {weekDay.map((d, index) => <WeekDay key={index} id={index} daysChoose={daysChoose} setDaysChoose={setDaysChoose} name={d} />)}
                         </WeekDayContainer>
                         <ContainerButtons>
