@@ -52,9 +52,9 @@ span, div, input, h1, h2, p, button, form, label{
 button:hover{
 	cursor:pointer;
 }
-/* *{
-background-color: ${backgroundGray};
-} */
+ion-icon:hover{
+	cursor:pointer;
+}
 
 `
 export default GlobalStyle;

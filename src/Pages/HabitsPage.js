@@ -11,6 +11,7 @@ import WeekDay from "../Components/WeekDay";
 import axios from "axios";
 import AllHabits from "../Components/AllHabits";
 import { AuthContext } from "../AppContext/auth";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function Habits() {
   const [openAddHabit, setOpenAddHabit] = useState(false);
@@ -19,6 +20,7 @@ export default function Habits() {
   const [habitName, setHabitName] = useState("");
   const [habitsList, setHabitsList] = useState([]);
   const { token } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const URL =
@@ -42,6 +44,7 @@ export default function Habits() {
 
   function saveHabit(e) {
     e.preventDefault();
+    setLoading(true);
     if (daysChoose.length > 0 && habitName != "") {
       const URL =
         "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
@@ -57,8 +60,12 @@ export default function Habits() {
         setOpenAddHabit(false);
         setHabitName("");
         setDaysChoose([]);
+        setLoading(false);
       });
-      promise.catch((err) => alert(err.response.data.message));
+      promise.catch((err) => {
+        alert(err.response.data.message);
+        setLoading(false);
+      });
     } else {
       alert("Preencha os campos corretamente");
     }
@@ -78,6 +85,7 @@ export default function Habits() {
           <AddHabitStyle data-test="habit-create-container">
             <FormStyle onSubmit={saveHabit}>
               <input
+                disabled={loading ? true : false}
                 placeholder="nome do hábito"
                 value={habitName}
                 onChange={(e) => setHabitName(e.target.value)}
@@ -86,6 +94,7 @@ export default function Habits() {
               <WeekDayContainer>
                 {weekDay.map((d, index) => (
                   <WeekDay
+                    loading={loading}
                     key={index}
                     id={index}
                     daysChoose={daysChoose}
@@ -95,10 +104,24 @@ export default function Habits() {
                 ))}
               </WeekDayContainer>
               <ContainerButtons>
-                <CancelButton onClick={cancelAddHabit} data-test="habit-create-cancel-btn">
+                <CancelButton
+                  disabled={loading ? true : false}
+                  onClick={cancelAddHabit}
+                  data-test="habit-create-cancel-btn"
+                >
                   Cancelar
                 </CancelButton>
-                <SaveButton type="submit" data-test="habit-create-save-btn">Salvar</SaveButton>
+                <SaveButton
+                  type="submit"
+                  data-test="habit-create-save-btn"
+                  disabled={loading ? true : false}
+                >
+                  {loading ? (
+                    <ThreeDots color="#ffffff" width="60" />
+                  ) : (
+                    "Salvar"
+                  )}
+                </SaveButton>
               </ContainerButtons>
             </FormStyle>
           </AddHabitStyle>
@@ -196,6 +219,7 @@ const SaveButton = styled.button`
   font-size: 16px;
   color: white;
   margin-left: 20px;
+  display: flex;
 `;
 
 const AddHabitStyle = styled.div`

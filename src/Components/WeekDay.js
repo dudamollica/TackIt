@@ -1,6 +1,12 @@
 import styled from "styled-components";
 
-export default function WeekDay({ id, name, daysChoose, setDaysChoose }) {
+export default function WeekDay({
+  loading,
+  id,
+  name,
+  daysChoose,
+  setDaysChoose,
+}) {
   const dayChoose = daysChoose.includes(id);
 
   function chooseThisDay(e, id) {
@@ -16,6 +22,7 @@ export default function WeekDay({ id, name, daysChoose, setDaysChoose }) {
 
   return (
     <ButtonStyle
+      disabled={loading ? true : false}
       onClick={(e) => chooseThisDay(e, id)}
       dayChoose={dayChoose && true}
       data-test="habit-day"
