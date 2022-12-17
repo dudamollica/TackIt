@@ -33,26 +33,26 @@ export default function Register() {
 
             <FormStyle onSubmit={submitRegister}>
 
-                <input placeholder="email" type="email" required
+                <input data-test="email-input" placeholder="email" type="email" required
                     value={email} onChange={(e) => setEmail(e.target.value)} >
                 </input>
 
-                <input placeholder="senha" type="password" required
+                <input data-test="password-input" placeholder="senha" type="password" required
                     value={password} onChange={(e) => setPassword(e.target.value)} >
                 </input>
 
-                <input placeholder="nome" type="text" required
+                <input data-test="user-name-input" placeholder="nome" type="text" required
                     value={name} onChange={(e) => setName(e.target.value)} >
                 </input>
 
-                <input placeholder="foto" type="url" required
+                <input data-test="user-image-input"  placeholder="foto" type="url" required
                     value={image} onChange={(e) => setImage(e.target.value)} >
                 </input>
 
-                <button type="submit">Cadastrar</button>
+                <button type="submit" data-test="singup-btn" >Cadastrar</button>
             </FormStyle>
             <LinkStyle>
-                <Link to="/">Já tem uma conta? Faça login!</Link>
+                <Link to="/" data-test="login-link" >Já tem uma conta? Faça login!</Link>
             </LinkStyle>
         </RegisterContainer>
     )

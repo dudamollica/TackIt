@@ -6,7 +6,7 @@ import Logo from "../Assets/Logo.png"
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../AppContext/auth";
 
-export default function Login({ setToken }) {
+export default function Login() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
@@ -32,17 +32,17 @@ export default function Login({ setToken }) {
             </LogoStyle>
 
             <FormStyle onSubmit={loginApp}>
-                <input placeholder="email" type="email" required
+                <input data-test="email-input" placeholder="email" type="email" required
                     value={email} onChange={(e) => setEmail(e.target.value)} >
                 </input>
 
-                <input placeholder="senha" type="password" required
+                <input data-test="password-input" placeholder="senha" type="password" required
                     value={password} onChange={(e) => setPassword(e.target.value)} >
                 </input>
-                <button type="submit">Entrar</button>
+                <button data-test="login-btn" type="submit">Entrar</button>
             </FormStyle>
             <LinkStyle>
-                <Link to="/cadastro">Não tem uma conta? Cadastre-se!</Link>
+                <Link to="/cadastro" data-test="singup-link" >Não tem uma conta? Cadastre-se!</Link>
             </LinkStyle>
         </LoginContainer>
     )

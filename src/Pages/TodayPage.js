@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Footer from "../Components/Footer";
-import NavBar from "../Components/NavBar";
+import Header from "../Components/Header";
 import { backgroundGray, darkBlue, ligthGreen } from "../Constants/Colors";
 import Check from "../Assets/check.png";
 import { AuthContext } from "../AppContext/auth";
@@ -11,7 +11,7 @@ import { AuthContext } from "../AppContext/auth";
 export default function Today() {
   const [todaysHabits, setTodayHabits] = useState([]);
   const [concludesHabits, setConcludesHabits] = useState([]);
-  const {token}= useContext(AuthContext)
+  const { token, calcPercentageDone } = useContext(AuthContext);
 
   useEffect(() => {
     const URL =
@@ -24,7 +24,7 @@ export default function Today() {
     const promise = axios.get(URL, config);
     promise.then((res) => {
       setTodayHabits(res.data);
-      const alredyConclude = res.data.filter((h) => h.done).map((h)=>h.id);
+      const alredyConclude = res.data.filter((h) => h.done).map((h) => h.id);
       setConcludesHabits(alredyConclude);
     });
     promise.catch((err) => console.log(err.data));
@@ -49,6 +49,11 @@ export default function Today() {
       default:
         break;
     }
+  }
+
+  function noCompletedHabit() {
+    calcPercentageDone(concludesHabits, todaysHabits);
+    return <p data-test="today-counter"> Nenhum hábito concluído ainda</p>;
   }
 
   function check(id, done) {
@@ -89,38 +94,55 @@ export default function Today() {
 
   return (
     <>
-      <NavBar />
+      <Header />
       <TodayContainer>
         <DayStyle concludesHabits={concludesHabits.length}>
-          {wichDay()}, {dayjs().date()}/{dayjs().month() + 1} <br />
+          <span data-test="today">
+            {wichDay()}, {dayjs().date()}/{dayjs().month() + 1}
+          </span>{" "}
+          <br />
           {concludesHabits.length == 0 ? (
-            <p> Nenhum hábito concluído ainda</p>
+            noCompletedHabit()
           ) : (
-            <p>{(concludesHabits.length*100/todaysHabits.length).toFixed(0)}% dos hábitos concluídos</p>
+            <p data-test="today-counter">
+              {calcPercentageDone(concludesHabits, todaysHabits)}% dos hábitos
+              concluídos
+            </p>
           )}
         </DayStyle>
         {todaysHabits.length != 0 &&
           todaysHabits.map((h, index) => (
-            <TodayHabits done={h.done} key={index}>
+            <TodayHabits
+              done={h.done}
+              key={index}
+              data-test="today-habit-container"
+            >
               <div>
-                <h1>{h.name}</h1>
+                <h1 data-test="today-habit-name">{h.name}</h1>
                 <span>
-                  Sequência atual:
-                  <CurrentSequence days={h.currentSequence}>
-                    {h.currentSequence} dias
-                  </CurrentSequence>
+                  <span data-test="today-habit-sequence">
+                    Sequência atual:
+                    <CurrentSequence done={h.done ? true : false}>
+                      {h.currentSequence} dias
+                    </CurrentSequence>
+                  </span>
                   <br />
-                  Seu recorde:
-                  <HighestSequence
-                    cs={h.currentSequence}
-                    hs={h.highestSequence}>
-                    {h.highestSequence} dias
-                  </HighestSequence>
+                  <span data-test="today-habit-record">
+                    Seu recorde:
+                    <HighestSequence
+                      cs={h.currentSequence}
+                      hs={h.highestSequence}
+                    >
+                      {h.highestSequence} dias
+                    </HighestSequence>
+                  </span>
                 </span>
               </div>
               <CheckBox
                 onClick={() => check(h.id, h.done)}
-                done={h.done ? true : false}>
+                done={h.done ? true : false}
+                data-test="today-habit-check-btn"
+              >
                 <img src={Check} />
               </CheckBox>
             </TodayHabits>
@@ -133,13 +155,15 @@ export default function Today() {
 
 const HighestSequence = styled.strong`
   color: ${(props) => props.cs == props.hs && props.cs > 0 && ligthGreen};
+  margin-left: 3px;
 `;
 
 const CurrentSequence = styled.strong`
-  color: ${(props) => props.days > 0 && ligthGreen};
+  color: ${(props) => props.done && ligthGreen};
+  margin-left: 3px;
 `;
 
-const CheckBox = styled.div`
+const CheckBox = styled.button`
   width: 69px;
   height: 69px;
   background: ${(props) => (props.done ? ligthGreen : "#EBEBEB")};
@@ -192,8 +216,8 @@ const DayStyle = styled.div`
 
 const TodayContainer = styled.div`
   background-color: ${backgroundGray};
-  height: 527px;
-  padding-top: 30px;
   padding-left: 15px;
   box-sizing: border-box;
+  padding-top: 90px;
+  padding-bottom: 100px;
 `;
