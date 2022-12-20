@@ -53,7 +53,7 @@ export default function Today() {
 
   function noCompletedHabit() {
     calcPercentageDone(concludesHabits, todaysHabits);
-    return <p data-test="today-counter"> Nenhum hábito concluído ainda</p>;
+    return <p data-test="today-counter"> Nenhum hábito concluído ainda </p>;
   }
 
   function check(id, done) {

@@ -13,7 +13,6 @@ export default function Register() {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const navigate = useNavigate();
-  const { saveImg } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 
   function submitRegister(e) {
@@ -24,7 +23,6 @@ export default function Register() {
     const body = { email, name, image, password };
     const promise = axios.post(URL, body);
     promise.then((res) => {
-      saveImg(image);
       navigate("/");
       setLoading(false);
     });

@@ -10,8 +10,7 @@ export default function Header() {
   return (
     <HeaderStyle data-test="header">
       <div>
-        {" "}
-        <img src={TrackIt} alt="Logo TrackIt" />{" "}
+        <img src={TrackIt} alt="Logo TrackIt" />
       </div>
       <UserImg src={userImg} />
     </HeaderStyle>
@@ -20,6 +19,7 @@ export default function Header() {
 
 const HeaderStyle = styled.div`
   position: fixed;
+  z-index: 1;
   height: 70px;
   width: 100%;
   background-color: ${darkBlue};

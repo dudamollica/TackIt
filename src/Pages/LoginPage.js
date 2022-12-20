@@ -28,8 +28,8 @@ export default function Login() {
       setLoading(false);
     });
     promise.catch((err) => {
-      alert(err.data.response.message);
       setLoading(false);
+      alert(err.response.data.message);
     });
   }
 
